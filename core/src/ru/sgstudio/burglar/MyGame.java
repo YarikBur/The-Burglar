@@ -83,7 +83,7 @@ public class MyGame implements Screen {
 		if(time!=(System.currentTimeMillis() - startTime) / 50){
 			pressed();
 			time++;
-			if(t==1) {
+			if(t==20) {
 				timer();
 			}
 			else t++;
