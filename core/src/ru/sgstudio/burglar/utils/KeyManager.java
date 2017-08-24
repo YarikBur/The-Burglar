@@ -21,8 +21,8 @@ public class KeyManager {
 		else return false;
 	}
 	/** @return boolean */
-	public boolean getPressedEnter(){
-		if(Gdx.input.isKeyPressed(Keys.ENTER)) return true;
+	public boolean getPressedRestart(){
+		if(Gdx.input.isKeyPressed(Keys.R)) return true;
 		else return false;
 	}
 }

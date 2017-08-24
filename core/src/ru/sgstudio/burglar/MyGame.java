@@ -23,7 +23,7 @@ public class MyGame implements Screen {
 	private static float time = 0;
 	private static float t=0;
 	private static float r=0;
-	private static float timeSecond = 0;
+	private static int m=1, s=30;
 	private static long startTime;
 	
 	private static int[] code= {0, 0, 0};
@@ -58,8 +58,8 @@ public class MyGame implements Screen {
 		for(int I=0;I<3;I++) {
 			int number = 0 + rnd.nextInt(99 - 0 + 1);
 			code[I] = number;
-			if(I==0 || I==2) System.out.print(clicked[code[I]]+" ");
-//			else System.out.print(-(clicked[code[I]])+" ");
+//			if(I==0 || I==2) System.out.print(code[I]+" ");
+//			else System.out.print(-(code[I])+" ");
 		}
 
 		startTime = System.currentTimeMillis();
@@ -83,12 +83,8 @@ public class MyGame implements Screen {
 		if(time!=(System.currentTimeMillis() - startTime) / 50){
 			pressed();
 			time++;
-			if(t==50) {
-				timeSecond++;
-				if(timeSecond==60) {
-					timeSecond=0;
-				}
-				t=0;
+			if(t==1) {
+				timer();
 			}
 			else t++;
 		}
@@ -98,7 +94,7 @@ public class MyGame implements Screen {
 		batch.draw(img, 0, 0);
 		lock.setPosition(213, 80);
 		toggleSwitches();
-		timer();
+		font.draw(batch, "Time left: "+m+":"+s, 5, Gdx.graphics.getHeight()-10);
 		open();
 		if(lock.getRotation()==360 || lock.getRotation()==-360) lock.setRotation(0);
 //		font.draw(batch, "deg: "+lock.getRotation() + " rCode: "+rCode, 5, Gdx.graphics.getHeight()-25);
@@ -134,7 +130,7 @@ public class MyGame implements Screen {
 			} else {
 				renderDefeat();
 			}
-			if(key.getPressedEnter()) main.setScr(main.game);
+			if(key.getPressedRestart()) main.setScr(main.game);
 		}
 	}
 
@@ -148,19 +144,20 @@ public class MyGame implements Screen {
 	}
 	
 	private void timer() {
-		int m=1, s=0;
-		if(s!=0) s-=timeSecond;
-		else if(s==0) {
+		s--;
+		if(s<=0) {
 			if(m>0) {
 				m=0;
-				s=59;
+				s+=59;
 			}
-		} else if(m<0 && s<0) {
+			else s=0;
+		}
+		t=0;
+		if(m<=0 && s<=0) {
 			play=false;
 			if(oneL && twoL && threeL) victory=true;
 			else victory=false;
 		}
-		font.draw(batch, m+":"+s, 5, Gdx.graphics.getHeight()-10);
 	}
 	
 	int i=0;
@@ -251,6 +248,11 @@ public class MyGame implements Screen {
 		batch.dispose();
 		img.dispose();
 		lock.getTexture().dispose();
+		time=0;
+		t=0;
+		r=0;
+		m=1; s=30;
+		play=true; victory=false;
 	}
 
 	@Override
